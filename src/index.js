@@ -10,6 +10,7 @@ function Square(props) {
   );
 }
 
+
 class Board extends React.Component {
 
   renderSquare(i) {
@@ -21,25 +22,21 @@ class Board extends React.Component {
     );
   }
 
+
+
+
   render() {
+    let elements = []
+    for (let i = 0; i < 3; i++){
+      let squares = [];
+      elements.push(<div className="board-row">{squares}</div>)
+      for (let j = 0; j < 3; j++) {
+        squares.push(this.renderSquare((3*i) + j + 1))
+      }
+    }
+
     return (
-      <div>
-        <div className="board-row">
-          {this.renderSquare(0)}
-          {this.renderSquare(1)}
-          {this.renderSquare(2)}
-        </div>
-        <div className="board-row">
-          {this.renderSquare(3)}
-          {this.renderSquare(4)}
-          {this.renderSquare(5)}
-        </div>
-        <div className="board-row">
-          {this.renderSquare(6)}
-          {this.renderSquare(7)}
-          {this.renderSquare(8)}
-        </div>
-      </div>
+      elements
     );
   }
 }
@@ -61,14 +58,14 @@ class Game extends React.Component {
     const history = this.state.history.slice(0, this.state.stepNumber + 1);
     const current = history[history.length - 1];
     const squares = current.squares.slice();
-    
+
     if (calculateWinner(squares) || squares[i]) {
       return;
     }
     let player = this.state.xIsNext ? 'X' : 'O';
     squares[i] = player;
-    
-    let moveDetail = `${player} on (${i%3+1}, ${parseInt(i/3)+1})`
+
+    let moveDetail = `${player} on (${i % 3 + 1}, ${parseInt(i / 3) + 1})`
     this.setState({
       history: history.concat([{
         squares: squares,
@@ -91,7 +88,7 @@ class Game extends React.Component {
     const current = history[this.state.stepNumber];
     const winner = calculateWinner(current.squares);
     const moves = history.map((step, move) => {
-      let weight = move >= history.length - 1 ? {fontWeight: 'bold'} : {fontWeight: 'normal'}
+      let weight = move >= history.length - 1 ? { fontWeight: 'bold' } : { fontWeight: 'normal' }
 
       const desc = move ?
         history[move].move :
@@ -113,7 +110,7 @@ class Game extends React.Component {
     return (
       <div className="game">
         <div className="game-board">
-          <Board 
+          <Board
             squares={current.squares}
             onClick={(i) => this.handleClick(i)}
           />
